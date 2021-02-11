@@ -2,6 +2,11 @@
 
 ### Arquitecturas de Software
 ## Laboratorio Componentes y conectores  Middleware- gestión de planos
+
+## Integrantes 
+* Carlos Andres Amorocho Amorocho
+* Rubian Camilo Saenz Rodriguez
+
 ### Dependencias
 * [Ejercicio introductorio al manejo de Spring y la configuración basada en anotaciones](https://github.com/ARSW-ECI-beta/DIP_DI-SPRING_JAVA-GRAMMAR_CHECKER).
 
