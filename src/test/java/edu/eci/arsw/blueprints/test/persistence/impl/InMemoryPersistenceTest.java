@@ -9,7 +9,11 @@ import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
+import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
+
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -65,10 +69,42 @@ public class InMemoryPersistenceTest {
         catch (BlueprintPersistenceException ex){
             
         }
-                
-        
     }
-
+    
+    // PRUEBA DEL METODO: getBlueprint(String author,String name)
+    @Test
+    public void testGetBluePrintWithAuthorAndName() throws BlueprintPersistenceException, BlueprintNotFoundException {
+    	
+    	InMemoryBlueprintPersistence mbp = new InMemoryBlueprintPersistence();
+    	Point[] puntos = new Point[] {new Point(10, 10), new Point(20, 20)};
+    	Blueprint blue = new Blueprint("Carlos", "Plano1", puntos);
+    	mbp.saveBlueprint(blue);
+    	Blueprint bp = mbp.getBlueprint("Carlos", "Plano1");
+    	assertEquals(blue, bp);
+    	
+    }
+    
+    // PRUEBA DEL METODO: getBlueprintsByAuthor
+    @Test
+    public void testGetAllBlueprintsByAuthor() throws BlueprintPersistenceException, BlueprintNotFoundException {
+    	
+    	InMemoryBlueprintPersistence mbp = new InMemoryBlueprintPersistence();
+    	Point[] puntos = new Point[] {new Point(10, 10), new Point(20, 20)};
+    	Blueprint blue = new Blueprint("Carlos", "Plano1", puntos);
+    	Blueprint blue1 = new Blueprint("Carlos", "Plano2", puntos);
+    	Set<Blueprint> listBlueprint = new HashSet<Blueprint>();
+    	
+    	listBlueprint.add(blue);
+    	listBlueprint.add(blue1);
+    	
+    	mbp.saveBlueprint(blue);
+    	mbp.saveBlueprint(blue1);
+    	
+    	Set<Blueprint> bp = mbp.getAllBlueprintsByAuthor("Carlos"); 
+    	
+    	assertEquals(listBlueprint, bp);
+    	
+    }
 
     
 }
