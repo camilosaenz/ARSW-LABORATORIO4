@@ -45,4 +45,5 @@ public interface BlueprintsPersistence {
      * @throws BlueprintNotFoundException
      */
     public Set<Blueprint> getAllBlueprintsByAuthor(String author) throws BlueprintNotFoundException;
+    
 }
