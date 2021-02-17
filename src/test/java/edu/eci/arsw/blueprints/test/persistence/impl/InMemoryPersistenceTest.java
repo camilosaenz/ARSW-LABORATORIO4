@@ -11,12 +11,16 @@ import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
+import edu.eci.arsw.blueprints.services.BlueprintsServices;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import static org.junit.Assert.*;
 
 /**
@@ -105,6 +109,37 @@ public class InMemoryPersistenceTest {
     	assertEquals(listBlueprint, bp);
     	
     }
+    
+    // PRUEBA FILTRO Muestreo.
+    // Para que esta prueba funcione se debe cambiar la anotacion de la etiqueta @Qualifier por "Muestreo".
+    @Test
+    public void testMuestreo() throws BlueprintNotFoundException {
+    	ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        BlueprintsServices bs = ac.getBean(BlueprintsServices.class);
+        Point[] puntos = new Point[] {new Point(1,1), new Point(7,9), new Point(7,4), new Point(20,30)};
+        bs.addNewBlueprint(new Blueprint("Carlos", "plano1", puntos));
+        Blueprint bp = bs.getBlueprint("Carlos", "plano1");
+    	assertEquals(bp.getPoints().get(0).getX(), 1);
+    	assertEquals(bp.getPoints().get(0).getY(), 1);
+    	assertEquals(bp.getPoints().get(1).getX(), 7);
+    	assertEquals(bp.getPoints().get(1).getY(), 4);
+    	assertEquals(bp.getPoints().size(), 2);
+    }
 
+    // PRUEBA FILTRO Redundancia.
+    // Para que esta prueba funcione se debe cambiar la anotacion de la etiqueta @Qualifier por "Redundancia".
+    @Test
+    public void testRedundancia() throws BlueprintNotFoundException {
+    	ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        BlueprintsServices bs = ac.getBean(BlueprintsServices.class);
+        Point[] puntos = new Point[] {new Point(10,15), new Point(10,15), new Point(20,30), new Point(20,30)};
+        bs.addNewBlueprint(new Blueprint("Camilo", "plano1", puntos));
+        Blueprint bp = bs.getBlueprint("Camilo", "plano1");
+    	assertEquals(bp.getPoints().get(0).getX(), 10);
+    	assertEquals(bp.getPoints().get(0).getY(), 15);
+    	assertEquals(bp.getPoints().get(1).getX(), 20);
+    	assertEquals(bp.getPoints().get(1).getY(), 30);
+    	assertEquals(bp.getPoints().size(), 2);
+    }
     
 }
